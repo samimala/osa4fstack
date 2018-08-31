@@ -15,12 +15,6 @@ const blogSchema = new mongoose.Schema({
   id: String
 })
 
-blogSchema.statics.format = function(blog) {
-  console.log('blog: ', blog)
-  return { title: blog.title, author: blog.author, url: blog.url, likes: blog.likes, id: blog._id }
-  
-}
-
 const Blog = mongoose.model('Blog', blogSchema)
 
 module.exports = Blog
