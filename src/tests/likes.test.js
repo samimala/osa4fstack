@@ -122,11 +122,35 @@ describe('most blogs', () => {
     })
   })
 
-  test('author with most blogs', () => {
+  test('when list has many blogs', () => {
     const result = listHelper.mostBlogs(listWithManyBlogs)
     expect(result).toEqual({
       author: 'Robert C. Martin',
       blogs: 3
+    })
+  })
+})
+
+describe('most likes', () => {
+
+  test('when list has no blogs', () => {
+    const result = listHelper.mostLikes(emptyBlogList)
+    expect(result).toEqual({ })
+  })
+
+  test('when list has one blog', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 5
+    })
+  })
+
+  test('when list has many blogs', () => {
+    const result = listHelper.mostLikes(listWithManyBlogs)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17
     })
   })
 })

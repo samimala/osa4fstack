@@ -39,10 +39,32 @@ const mostBlogs = (blogs) => {
   return {}
 }
 
+const mostLikes = (blogs) => {
+  if (!blogs.length) {
+    return {}
+  }
+
+  let authors = blogs.map(blog => blog.author)
+  let blogLikes = []
+
+  authors.forEach(auth => {
+    let blog = blogLikes.find(val => val.author===auth)
+    if (!blog) {
+      blogLikes.push({ author: auth, likes: blogs.reduce((totlikes, redblog) => (redblog.author===auth)?totlikes+redblog.likes:totlikes, 0) })
+    } 
+  })
+  //console.log('Bloglikes: ', blogLikes)
+  let maxLikes = blogLikes.reduce((accum,bwithLikes) => accum=Math.max(accum, bwithLikes.likes),0)
+  let maxIndex = blogLikes.findIndex((blog) => blog.likes === maxLikes)
+  //console.log('MaxLikes:', blogLikes[maxIndex])
+  return blogLikes[maxIndex]
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
 
