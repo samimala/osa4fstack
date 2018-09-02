@@ -12,6 +12,10 @@ const totalLikes = (blogs) => {
 }
 
 const favoriteBlog = (blogs) => {
+  if (!blogs.length) {
+    return {}
+  }
+
   let maxLikes = blogs.reduce((accum,blog) => accum=Math.max(accum, blog.likes),0)
   let maxIndex = blogs.findIndex((blog) => blog.likes === maxLikes)
   return { title: blogs[maxIndex].title, author: blogs[maxIndex].author, likes: blogs[maxIndex].likes }
@@ -29,7 +33,10 @@ const mostBlogs = (blogs) => {
 
   let maxBlogs = blogCounts.reduce((accum,blogcnt) => accum=Math.max(accum, blogcnt.blogs),0)
   let maxIndex = blogCounts.findIndex((blogcnt) => blogcnt.blogs === maxBlogs)
-  return blogCounts[maxIndex]
+  if (blogCounts[maxIndex]) {
+    return blogCounts[maxIndex]
+  }
+  return {}
 }
 
 module.exports = {

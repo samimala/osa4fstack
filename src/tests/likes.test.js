@@ -84,6 +84,20 @@ describe('total likes', () => {
 
 describe('most liked', () => {
  
+  test('when list has no blogs equals there is no liked blog', () => {
+    const result = listHelper.favoriteBlog(emptyBlogList)
+    expect(result).toEqual({ })
+  })
+
+  test('when list has no blogs equals there is no liked blog', () => {
+    const result = listHelper.favoriteBlog(listWithOneBlog)
+    expect(result).toEqual({
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      likes: 5,
+    })
+  })
+
   test('when list has many blogs equals the sum of likes', () => {
     const result = listHelper.favoriteBlog(listWithManyBlogs)
     expect(result).toEqual({
@@ -94,7 +108,20 @@ describe('most liked', () => {
   })
 })
 
-describe('most liked', () => {
+describe('most blogs', () => {
+  test('when list is empty there is not authors or blogs', () => {
+    const result = listHelper.mostBlogs(emptyBlogList)
+    expect(result).toEqual({})
+  })
+
+  test('when list has only one blog', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      blogs: 1
+    })
+  })
+
   test('author with most blogs', () => {
     const result = listHelper.mostBlogs(listWithManyBlogs)
     expect(result).toEqual({
