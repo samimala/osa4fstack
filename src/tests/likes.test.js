@@ -64,7 +64,7 @@ const listWithManyBlogs = [
   }  
 ]
 
-describe('total likes', () => {
+describe.skip('total likes', () => {
 
   test('when list is empty there are 0 likes', () => {
     const result = listHelper.totalLikes(emptyBlogList)
@@ -82,7 +82,7 @@ describe('total likes', () => {
   })
 })
 
-describe('most liked', () => {
+describe.skip('most liked', () => {
  
   test('when list has no blogs equals there is no liked blog', () => {
     const result = listHelper.favoriteBlog(emptyBlogList)
@@ -108,7 +108,7 @@ describe('most liked', () => {
   })
 })
 
-describe('most blogs', () => {
+describe.skip('most blogs', () => {
   test('when list is empty there is not authors or blogs', () => {
     const result = listHelper.mostBlogs(emptyBlogList)
     expect(result).toEqual({})

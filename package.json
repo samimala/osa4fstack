@@ -4,9 +4,9 @@
   "description": "Osa4",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "watch": "nodemon src/index.js",
-    "test": "jest --verbose"
+    "start": "NODE_ENV=production node src/index.js",
+    "watch": "NODE_ENV=development nodemon src/index.js",
+    "test": "NODE_ENV=test jest --verbose"
   },
   "repository": {
     "type": "git",
@@ -28,7 +28,8 @@
   "devDependencies": {
     "eslint": "^5.4.0",
     "jest": "^23.5.0",
-    "nodemon": "^1.18.3"
+    "nodemon": "^1.18.3",
+    "supertest": "^3.3.0"
   },
   "jest": {
     "testEnvironment": "node"
