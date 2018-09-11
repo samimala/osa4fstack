@@ -60,7 +60,7 @@ test('blogs are returned as json', async () => {
   expect(res.body.length).toBe(6)
 
   const urls = res.body.map(r => r.url)
-  expect(urls).toContainEqual(initialBlogs[4].url)
+  expect(urls).toContain(initialBlogs[4].url)
 })
 
 afterAll( () => {

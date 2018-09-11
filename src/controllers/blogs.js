@@ -7,18 +7,14 @@ const formatBlog  = (blog) => {
 }
 
 
-blogsRouter.get('/', (request, response) => {
-  Blog
-    .find({})
-    .then(blogs => {
-      //console.log('Blogs found in DB')
-      //console.log('Blogs: ', blogs)
-      //console.log(blogs.map(formatBlog))
-      response.json(blogs.map(formatBlog))
-    })
-    .catch(err => {
-      console.log('Error:', err)
-    })
+blogsRouter.get('/', async (request, response) => {
+  try {
+    const blogs = await Blog.find({})
+    response.json(blogs.map(formatBlog))
+  }
+  catch(exception) {
+    console.log('Error:', exception)
+  }
 })
 
 blogsRouter.post('/', (request, response) => {
