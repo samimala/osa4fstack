@@ -63,6 +63,7 @@ test('blogs are returned as json', async () => {
   expect(urls).toContain(initialBlogs[4].url)
 })
 
+
 afterAll( () => {
   server.close()
 })
