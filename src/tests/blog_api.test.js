@@ -117,6 +117,34 @@ test('add new blog without likes to db', async () => {
   expect(contents).toContainEqual(testAgainstBlog)
 })
 
+test('add new blog without title to db fails', async () => {
+
+  const newBlog = {
+    author: 'Plokikirjoittaja2',
+    url: 'Jossain2',
+    likes: 3
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
+
+test('add new blog without url to db fails', async () => {
+
+  const newBlog = {
+    title: 'Kun urli puuttuu, se puuttuu',
+    author: 'Plokikirjoittaja3',
+    likes: 3
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
+
 afterAll( () => {
   server.close()
 })

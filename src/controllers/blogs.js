@@ -24,6 +24,10 @@ blogsRouter.post('/', async (request, response) => {
     blog['likes'] = 0
     console.log('Blog now: ', blog)
   }
+  if (blog.title===undefined || blog.url===undefined) {
+    response.status(400).end()
+    return
+  }
   //console.log(request.body)
   const result = await blog.save()
   response.status(201).json(result)
