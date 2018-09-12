@@ -64,14 +64,19 @@ test('blogs are returned as json', async () => {
 })
 
 
-test('blog without content not going to db', async () => {
+test('add new blog to db', async () => {
 
-  const newBlog = {}
+  const newBlog = {
+    title: 'Lazy Evaluation in Refrigeration Methodology',
+    author: 'Diploma Mill Graduate',
+    url: 'not known',
+    likes: -1
+  }
 
   await api
     .post('/api/blogs')
     .send(newBlog)
-    .expect(400)
+    .expect(201)
 
   const res = await api
     .get('/api/blogs')
