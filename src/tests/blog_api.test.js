@@ -88,6 +88,35 @@ test('add new blog to db', async () => {
   expect(contents).toContainEqual(newBlog)
 })
 
+test('add new blog without likes to db', async () => {
+
+  const newBlog = {
+    title: 'Tää tätä on',
+    author: 'Plokikirjoittaja',
+    url: 'Jossain'
+  }
+
+  const testAgainstBlog = {
+    title: 'Tää tätä on',
+    author: 'Plokikirjoittaja',
+    url: 'Jossain',
+    likes: 0
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+
+  const res = await api
+    .get('/api/blogs')
+    .expect(200)
+
+  const contents = res.body.map(blog => ({ title: blog.title, author: blog.author, url: blog.url, likes: blog.likes }))
+  console.log('contents: ', contents)
+  expect(contents).toContainEqual(testAgainstBlog)
+})
+
 afterAll( () => {
   server.close()
 })
