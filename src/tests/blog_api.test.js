@@ -64,6 +64,25 @@ test('blogs are returned as json', async () => {
 })
 
 
+test('blog without content not going to db', async () => {
+
+  const newBlog = {}
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const res = await api
+    .get('/api/blogs')
+    .expect(200)
+
+  expect(res.body.length).toBe(initialBlogs.length + 1)
+  const contents = res.body.map(blog => ({ title: blog.title, author: blog.author, url: blog.url, likes: blog.likes }))
+  console.log('contents: ', contents)
+  expect(contents).toContainEqual(newBlog)
+})
+
 afterAll( () => {
   server.close()
 })
