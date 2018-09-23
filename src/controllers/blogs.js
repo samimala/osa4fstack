@@ -2,7 +2,8 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
 const formatBlog  = (blog) => {
-  console.log('blog: ', blog)
+  //console.log('blog: ', blog)
+  //console.log('formatBlog called')
   return { title: blog.title, author: blog.author, url: blog.url, likes: blog.likes, id: blog._id }
 }
 
@@ -20,9 +21,9 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
   const blog = new Blog(request.body)
   if (blog.likes===undefined) {
-    console.log('likes was undefined')
+    //console.log('likes was undefined')
     blog['likes'] = 0
-    console.log('Blog now: ', blog)
+    //console.log('Blog now: ', blog)
   }
   if (blog.title===undefined || blog.url===undefined) {
     response.status(400).end()
