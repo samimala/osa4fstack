@@ -12,7 +12,7 @@ describe ('initially blogs in db', async () => {
     const blogObjects = initialBlogs.map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
-    console.log('Saved blogs')
+    //console.log('Saved blogs')
   })
 
   test('blogs are returned as json', async () => {
@@ -25,6 +25,14 @@ describe ('initially blogs in db', async () => {
 
     const urls = res.body.map(r => r.url)
     expect(urls).toContain(initialBlogs[4].url)
+  })
+
+  test('delete blog', async () => {
+    const blogsBefore = await blogsInDb()
+    await api.delete('/api/blogs/' + blogsBefore[0].id)
+    const blogsAfter = await blogsInDb()
+    expect(blogsAfter.length).toBe(blogsBefore.length - 1)
+    expect(blogsAfter).not.toContainEqual(blogsBefore[0])
   })
 
   describe ('add new blog', async () => {
@@ -55,11 +63,8 @@ describe ('initially blogs in db', async () => {
       const contents = blogsAfter.map(blog => ({ title: blog.title, author: blog.author, url: blog.url, likes: blog.likes }))
       expect(contents).toContainEqual(newBlog)
     })
-
   
     describe('add new blogs', async () => {
-
-
       test('add new blog without likes to db', async () => {
 
         const newBlog = {
