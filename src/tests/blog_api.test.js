@@ -29,10 +29,23 @@ describe ('initially blogs in db', async () => {
 
   test('delete blog', async () => {
     const blogsBefore = await blogsInDb()
+    console.log('Deleting ', blogsBefore[0].id)
     await api.delete('/api/blogs/' + blogsBefore[0].id)
     const blogsAfter = await blogsInDb()
     expect(blogsAfter.length).toBe(blogsBefore.length - 1)
     expect(blogsAfter).not.toContainEqual(blogsBefore[0])
+  })
+
+  test('modify likes in a blog', async () => {
+    const blogsBefore = await blogsInDb()
+    blogsBefore[0].likes = blogsBefore[0].likes+2
+    console.log('Modify: ', blogsBefore[0])
+    await api
+      .put('/api/blogs/' + blogsBefore[0].id)
+      .send(blogsBefore[0])
+    const blogsAfter = await blogsInDb()
+    expect(blogsAfter.length).toBe(blogsBefore.length)
+    expect(blogsAfter).toContainEqual(blogsBefore[0])
   })
 
   describe ('add new blog', async () => {
