@@ -18,10 +18,22 @@ usersRouter.get('/', async (request, response) => {
   catch(exception) {
     console.log('Error:', exception)
   }})
-  
+
 usersRouter.post('/', async (request, response) => {
   try {
     const body = request.body
+
+    const existingUser = await User.find({ username : body.username })
+    console.log('existing user: ', existingUser)
+    if (existingUser.length) {
+      response.status(500).json({ error: 'username already exists' })
+      return
+    }
+    if (body.password.length < 3) {
+      response.status(500).json({ error: 'password too short, must be at least 3 characters'})
+      return
+    }
+
 
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(body.password, saltRounds)
@@ -32,6 +44,7 @@ usersRouter.post('/', async (request, response) => {
       adult: body.adult,
       passwordHash
     })
+
 
     const savedUser = await user.save()
 
