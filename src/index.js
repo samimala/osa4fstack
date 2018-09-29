@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const middleware = require('./utils/middleware')
 const blogsRouter = require('./controllers/blogs')
 const config = require('./utils/config')
+const usersRouter = require('./controllers/users')
 
 
 
@@ -25,6 +26,7 @@ app.use(express.static('build'))
 app.use(middleware.logger)
 
 app.use('/api/blogs', blogsRouter)
+app.use('/api/users', usersRouter)
 
 app.use(middleware.error)
 
