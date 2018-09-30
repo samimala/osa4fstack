@@ -26,11 +26,11 @@ usersRouter.post('/', async (request, response) => {
     const existingUser = await User.find({ username : body.username })
     console.log('existing user: ', existingUser)
     if (existingUser.length) {
-      response.status(500).json({ error: 'username already exists' })
+      response.status(400).json({ error: 'username already exists' })
       return
     }
     if (body.password.length < 3) {
-      response.status(500).json({ error: 'password too short, must be at least 3 characters'})
+      response.status(400).json({ error: 'password too short, must be at least 3 characters'})
       return
     }
 
