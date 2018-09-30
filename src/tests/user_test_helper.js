@@ -10,7 +10,7 @@ const initialUsers = [
   {
     username: 'InitUser2',
     name: 'Initial 2 User',
-    adult: true,
+    adult: false,
     password: 'salasana'
   },
   {

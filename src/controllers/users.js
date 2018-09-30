@@ -45,6 +45,9 @@ usersRouter.post('/', async (request, response) => {
       passwordHash
     })
 
+    if (user.adult===undefined) {
+      user.adult=true
+    }
 
     const result = await user.save()
     response.status(201).json(result)

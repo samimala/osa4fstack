@@ -55,7 +55,7 @@ describe ('initially users in db', async () => {
       const newUser = {
         username: 'testuser',
         name: 'test user',
-        adult: true,
+        adult: false,
         password: 'thisIsIt'
       }
 
@@ -78,6 +78,38 @@ describe ('initially users in db', async () => {
     })
 
     describe('add new users', async () => {
+      test('adding new user missing adult info succeeds', async () => {
+
+        const usersBefore = await usersInDb()
+
+        const newUser = {
+          username: 'adultundefined',
+          name: 'Adult Perhaps',
+          password: 'salasana'
+        }
+
+        await api
+          .post('/api/users')
+          .send(newUser)
+          .expect(201)
+
+        await api
+          .get('/api/users')
+          .expect(200)
+
+        const usersAfter = await usersInDb()
+        expect(usersAfter.length).toBe(usersBefore.length + 1)
+
+        const testAgainstUser = {
+          username: 'adultundefined',
+          name: 'Adult Perhaps',
+          adult: true,
+        }
+
+        const contents = usersAfter.map(user => ({ username: user.username, name: user.name, adult: user.adult }))
+        expect(contents).toContainEqual(testAgainstUser)
+      })
+
 
       test('adding new user having existing username fails', async () => {
 
