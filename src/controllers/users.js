@@ -46,9 +46,8 @@ usersRouter.post('/', async (request, response) => {
     })
 
 
-    const savedUser = await user.save()
-
-    response.json(savedUser)
+    const result = await user.save()
+    response.status(201).json(result)
   } catch (exception) {
     console.log(exception)
     response.status(500).json({ error: 'something went wrong...' })
