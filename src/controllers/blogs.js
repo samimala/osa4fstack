@@ -1,17 +1,23 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
-const formatBlog  = (blog) => {
-  //console.log('blog: ', blog)
-  //console.log('formatBlog called')
-  return { title: blog.title, author: blog.author, url: blog.url, likes: blog.likes, id: blog._id }
-}
 
 
 blogsRouter.get('/', async (request, response) => {
   try {
-    const blogs = await Blog.find({})
-    response.json(blogs.map(formatBlog))
+    const blogs = await Blog
+      .find({})
+      .populate('user', { _id:1, username: 1, name: 1 })
+
+    console.log('Blogs', blogs)
+    if (blogs===undefined || blogs.length===0) {
+      console.log('Mitään ei löytynyt')
+      response.json({ data: 'no content in page' })
+      return
+    }
+
+    response.json(blogs.map(Blog.format))
   }
   catch(exception) {
     console.log('Error:', exception)
@@ -19,19 +25,30 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  const blog = new Blog(request.body)
-  if (blog.likes===undefined) {
-    //console.log('likes was undefined')
-    blog['likes'] = 0
-    //console.log('Blog now: ', blog)
-  }
-  if (blog.title===undefined || blog.url===undefined) {
+  const body = request.body
+  if (body.title===undefined || body.url===undefined) {
     response.status(400).end()
     return
   }
+
+  //const user = await User.findById(body.userId)
+  const user = await User.findOne()
+
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    likes: (body.likes===undefined)?0:body.likes,
+    url: body.url,
+    user: user._id
+  })
+
+
   //console.log(request.body)
-  const result = await blog.save()
-  response.status(201).json(result)
+  const savedBlog = await blog.save()
+  user.blogs = user.blogs.concat(savedBlog._id)
+  await user.save()
+
+  response.status(201).json(savedBlog)
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
@@ -52,7 +69,8 @@ blogsRouter.put('/:id', async (request, response) => {
     }
 
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true } )
-    response.json(formatBlog(updatedBlog))
+    console.log('udatedBlog', updatedBlog)
+    response.json(Blog.format(updatedBlog))
   } catch(exception) {
     console.log(exception)
     response.status(400).send({ error: 'malformatted id' })
