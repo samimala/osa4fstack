@@ -65,7 +65,7 @@ blogsRouter.post('/', async (request, response) => {
 
 blogsRouter.post('/:id/comments', async (request, response) => {
   const body = request.body
-  if (!body || !body.comments) {
+  if (!body || !body.comment) {
     response.status(400).send({ error: 'Nothing to save' })
     return
   }
