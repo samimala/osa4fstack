@@ -63,6 +63,30 @@ blogsRouter.post('/', async (request, response) => {
   }
 })
 
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const body = request.body
+  if (!body || !body.comments) {
+    response.status(400).send({ error: 'Nothing to save' })
+    return
+  }
+
+  console.log('Comment post body: ', body)
+  try {
+    const blog = await Blog.findById(request.params.id)
+
+    let commentupdate = { comments: (!blog.comments)?[]:blog.comments }
+    commentupdate.comments.push(body.comment)
+
+    console.log('Trying to save: ', commentupdate)
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, commentupdate, { new: true } )
+    console.log('udated blog comments', updatedBlog)
+    response.json(Blog.format(updatedBlog))
+  } catch(exception) {
+    console.log(exception)
+    response.status(400).send({ error: 'malformatted id' })
+  }
+})
+
 blogsRouter.delete('/:id', async (request, response) => {
   console.log('Request is ', request.params.id)
   try {

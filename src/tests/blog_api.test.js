@@ -5,12 +5,12 @@ const Blog = require('../models/blog')
 const { format, initialBlogs, nonExistingId, blogsInDb }  = require('./test_helper')
 
 
-describe ('initially blogs in db', async () => {
+describe('initially blogs in db', async () => {
   beforeAll( async () => {
     await Blog.remove({})
 
     const blogObjects = initialBlogs.map(blog => new Blog(blog))
-    const promiseArray = blogObjects.map(blog => blog.save())
+    const promiseArray = blogObjects.map(blog => Blog.post('/api/blogs').send(blog))
     await Promise.all(promiseArray)
     //console.log('Saved blogs')
   })
